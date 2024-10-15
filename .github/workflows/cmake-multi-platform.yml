@@ -58,20 +58,22 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run:   |
              if [ "$RUNNER_OS" == "macOS" ]; then
-                cmake -B ${{ steps.strings.outputs.build-output-dir }}
-                -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-                -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-                -DJUCE_BUILD_EXAMPLES=OFF
-                -DCMAKE_OSX_ARCHITECTURES=arm64;x86_64
-                -S ${{ github.workspace }}             
+                cmake -B ${{ steps.strings.outputs.build-output-dir }} \
+                -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+                -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+                -DJUCE_BUILD_EXAMPLES=OFF \
+                -DCMAKE_OSX_ARCHITECTURES=arm64;x86_64 \
+                -S ${{ github.workspace }} /
+                /
               elif [ "$RUNNER_OS" == "Windows" ]; then
-                cmake -B ${{ steps.strings.outputs.build-output-dir }}
-                -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-                -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-                -DJUCE_BUILD_EXAMPLES=OFF
-                -S ${{ github.workspace }} 
+                cmake -B ${{ steps.strings.outputs.build-output-dir }} \
+                -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+                -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+                -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+                -DJUCE_BUILD_EXAMPLES=OFF \
+                -S ${{ github.workspace }} \
+                /
               else 
                 echo "$RUNNER_OS not supported"
                 exit 1
