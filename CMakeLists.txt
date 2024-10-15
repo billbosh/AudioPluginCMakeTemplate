@@ -18,7 +18,8 @@ if (NOT EXISTS ${CPM_DOWNLOAD_LOCATION})
     file(DOWNLOAD https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake ${CPM_DOWNLOAD_LOCATION})
 endif ()
 
-if ((DEFINED ENV{CI}) AND (CMAKE_BUILD_TYPE STREQUAL "Release") AND NOT (CMAKE_SYSTEM_NAME STREQUAL "iOS"))
+# bad not good
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     message("Building for Apple Silicon and x86_64")
     set(CMAKE_OSX_ARCHITECTURES arm64 x86_64)
 endif ()
