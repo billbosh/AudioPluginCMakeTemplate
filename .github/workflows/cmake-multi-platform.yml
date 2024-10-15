@@ -62,6 +62,7 @@ jobs:
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -DJUCE_BUILD_EXAMPLES=OFF
+        -DCMAKE_OSX_ARCHITECTURES=arm64;x86_64
         -S ${{ github.workspace }}
 
     - name: Build
