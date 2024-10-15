@@ -49,7 +49,7 @@ juce_add_plugin(${PROJECT_NAME}
         COPY_PLUGIN_AFTER_BUILD TRUE
         PLUGIN_MANUFACTURER_CODE Manu
         PLUGIN_CODE Oop1
-        FORMATS VST3 AU Standalone
+        FORMATS VST3 AU
         PRODUCT_NAME "AudioPluginCMakeTemplate"        
 )
 
