@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 
 # Change to your project name
+set(FORMATS Standalone AU VST3)
 project(AudioPluginCMakeTemplate VERSION 0.0.1)
 
 
@@ -55,7 +56,7 @@ juce_add_plugin(${PROJECT_NAME}
         COPY_PLUGIN_AFTER_BUILD TRUE
         PLUGIN_MANUFACTURER_CODE Manu
         PLUGIN_CODE Oop1
-        FORMATS VST3 AU
+        FORMATS "${FORMATS}"
         PRODUCT_NAME "AudioPluginCMakeTemplate"        
 )
 
