@@ -19,9 +19,10 @@ if (NOT EXISTS ${CPM_DOWNLOAD_LOCATION})
 endif ()
 
 # bad not good
-if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    message("Building for x86_64")
-    set(CMAKE_OSX_ARCHITECTURES x86_64)
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+    message("Building for Apple Silicon and x86_64")
+    set (PLATFORM_LIBS "-framework CoreFoundation -framework IOKit -framework Foundation -framework SystemConfiguration -framework Network")
+    set(CMAKE_OSX_ARCHITECTURES arm64 x86_64)
 endif ()
 
 include(${CPM_DOWNLOAD_LOCATION})
