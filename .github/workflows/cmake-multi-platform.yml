@@ -31,8 +31,8 @@ jobs:
             c_compiler: cl
             cpp_compiler: cl
           - os: macos-latest
-            c_compiler: clang
-            cpp_compiler: clang
+            c_compiler: cl
+            cpp_compiler: cl
         exclude:
           - os: windows-latest
             c_compiler: gcc
@@ -41,7 +41,7 @@ jobs:
           - os: macos-latest
             c_compiler: gcc
           - os: macos-latest
-            c_compiler: cl
+            c_compiler: clang
 
     steps:
     - uses: actions/checkout@v4
