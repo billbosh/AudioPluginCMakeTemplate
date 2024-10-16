@@ -84,6 +84,7 @@ jobs:
         echo "STANDALONE_PATH=$ARTIFACTS_PATH/Standalone/${{ env.PRODUCT_NAME }}.app" >> $GITHUB_ENV
         echo "ARTIFACT_NAME=${{ env.PRODUCT_NAME }}-${{ env.VERSION }}-${{ matrix.name }}" >> $GITHUB_ENV
 
+    
     - name: Create Installers
       if: matrix.os == 'windows-latest'
       run: |
@@ -101,7 +102,10 @@ jobs:
         Source: "build\${Project_NAME}_artefacts\VST3\${Project_NAME}.vst3; DestDir: "{app}"; Flags; ignoreversion
         ' > installer.iss
         
-        mkdir -p instller
-        wget https://jrsoftware.org/download.php/is.exe -O installer/inno_setup.exe
-        wine installer/inno_setup.exe /S /D=$HOME/inno_setup
-        wine $HOME/inno_setup/ISCC.exe installer.iss
+    - name: Inno Setup Action
+      if: matrix.os == 'windows-latest'
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+      with:
+          path: installer.iss
+          options: /O+
+            
