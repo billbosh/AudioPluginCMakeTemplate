@@ -5,7 +5,7 @@ set(PRODUCT_NAME AudioPluginCMakeTemplateProduct)
 # set(PROJECT_VERSION v0.0.1)
 set(COMPANY_NAME billbosh)
 set(FORMATS Standalone AU VST3)
-project(AudioPluginCMakeTemplate VERSION v0.0.1)
+project(AudioPluginCMakeTemplate VERSION ${CURRENT_VERSION})
 
 if ((DEFINED ENV{CI}))
     set (env_file "${PROJECT_SOURCE_DIR}/.env")
