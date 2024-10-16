@@ -20,10 +20,10 @@ if (NOT EXISTS ${CPM_DOWNLOAD_LOCATION})
 endif ()
 
 # bad not good
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
-    message("Building for Apple Sillicon")
-    set(CMAKE_OSX_ARCHITECTURES arm64)
-endif ()
+# if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+#    message("Building for Apple Sillicon")
+#    set(CMAKE_OSX_ARCHITECTURES arm64)
+# endif ()
 
 include(${CPM_DOWNLOAD_LOCATION})
 
