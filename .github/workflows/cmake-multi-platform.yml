@@ -85,10 +85,10 @@ jobs:
 
     - name: GITHUB_ENV Test
       run: |
-        echo ${PROJECT_NAME}
-        echo ${PRODUCT_NAME}
-        echo ${CURRENT_VERSION}
-        echo ${COMPANY_NAME}
+        echo "${PROJECT_NAME}
+              ${PRODUCT_NAME}
+              ${CURRENT_VERSION}
+              ${COMPANY_NAME}"
 
     # - name: Create Windows installer
     #   if: matrix.os == "windows-latest"
