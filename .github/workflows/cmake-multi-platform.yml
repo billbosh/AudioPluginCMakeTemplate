@@ -92,7 +92,7 @@ jobs:
               ${COMPANY_NAME}"
 
     - name: Create Windows installer
-      if: runner.os == "windows-latest"
+      if: runner.os == "Windows"
       run: |
         echo '
         [Setup]
