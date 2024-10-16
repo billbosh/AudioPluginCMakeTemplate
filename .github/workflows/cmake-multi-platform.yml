@@ -76,7 +76,7 @@ jobs:
 
     - name: Set additional env vars for next steps
       run: |
-        ARTIFACTS_PATH="${{ steps.strings.outputs.build-output-dir }}/${{ env.PROJECT_NAME }}_artefacts/"
+        ARTIFACTS_PATH="${{ steps.strings.outputs.build-output-dir }}\${{ env.PROJECT_NAME }}_artefacts\"
         echo "ARTIFACTS_PATH=$ARTIFACTS_PATH" >> $GITHUB_ENV
         echo "VST3_PATH=$ARTIFACTS_PATH/VST3/${{ env.PRODUCT_NAME }}.vst3" >> $GITHUB_ENV
         echo "AU_PATH=$ARTIFACTS_PATH/AU/${{ env.PRODUCT_NAME }}.component" >> $GITHUB_ENV
