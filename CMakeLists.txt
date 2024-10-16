@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(AudioPluginCMakeTemplate VERSION v0.0.1)
+project(AudioPluginCMakeTemplate VERSION 0.0.1)
 
 # Set project enviroment variables
 set(PRODUCT_NAME AudioPluginCMakeTemplateProduct)
