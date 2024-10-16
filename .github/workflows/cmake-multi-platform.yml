@@ -45,6 +45,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - uses: ilammy/msvc-dev-cmd@v1
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
@@ -90,9 +91,24 @@ jobs:
               ${CURRENT_VERSION}
               ${COMPANY_NAME}"
 
-    # - name: Create Windows installer
-    #   if: matrix.os == "windows-latest"
-    #   run: |
-    #     echo '
-    #     [Setup]
-    #     AppName
+    - name: Create Windows installer
+      if: matrix.os == "windows-latest"
+      run: |
+        echo '
+        [Setup]
+        AppName=${Project_NAME}
+        AppVersion=1.0
+        DefaultDirName={pf}\Common Files\VST3
+        OutputDir=output
+        OutputBaseFilename=MyPlugin_Win_Installer
+        Compression=lzma
+        SolidCompression=yes
+
+        [Files]
+        Source: "build\${Project_NAME}_artefacts\VST3\${Project_NAME}.vst3; DestDir: "{app}"; Flags; ignoreversion
+        ' > installer.iss
+
+        mkdir -p instller
+        wget https://jrsoftware.org/download.php/is.exe -O installer/inno_setup.exe
+        wine installer/inno_setup.exe /S /D=$HOME/inno_setup
+        wine $HOME/inno_setup/ISCC.exe installer.iss
