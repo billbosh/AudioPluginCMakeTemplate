@@ -30,6 +30,11 @@ if ((DEFINED ENV{CI}))
     file(APPEND "${env_file}" "COMPANY_NAME=${COMPANY_NAME}\n")
 endif ()
 
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+   message("Building for Apple Sillicon")
+   set(-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64)
+endif ()
+
 include(${CPM_DOWNLOAD_LOCATION})
 
 # Bring in JUCE locally
