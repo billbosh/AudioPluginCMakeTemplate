@@ -53,15 +53,33 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
+    - name: Read in .env from CMake # see GitHubENV.cmake
+      run: |
+        cat .env # show us the config
+        cat .env >> $GITHUB_ENV # pull in our PRODUCT_NAME, etc
+
+    - name: Set additional env vars for next steps
+      run: |
+        ARTIFACTS_PATH=${{ env.BUILD_DIR }}/${{ env.PROJECT_NAME }}_artefacts/${{ env.BUILD_TYPE }}
+        echo "ARTIFACTS_PATH=$ARTIFACTS_PATH" >> $GITHUB_ENV
+        echo "VST3_PATH=$ARTIFACTS_PATH/VST3/${{ env.PRODUCT_NAME }}.vst3" >> $GITHUB_ENV
+        echo "AU_PATH=$ARTIFACTS_PATH/AU/${{ env.PRODUCT_NAME }}.component" >> $GITHUB_ENV
+        echo "AUV3_PATH=$ARTIFACTS_PATH/AUv3/${{ env.PRODUCT_NAME }}.appex" >> $GITHUB_ENV
+        echo "STANDALONE_PATH=$ARTIFACTS_PATH/Standalone/${{ env.PRODUCT_NAME }}.app" >> $GITHUB_ENV
+        echo "ARTIFACT_NAME=${{ env.PRODUCT_NAME }}-${{ env.VERSION }}-${{ matrix.name }}" >> $GITHUB_ENV
+
+    - name: GITHUB_ENV Test
+      run: |
+        echo ${PROJECT_NAME}
+        echo ${PRODUCT_NAME}
+        echo ${CURRENT_VERSION}
+        echo ${COMPANY_NAME}
+
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DJUCE_BUILD_EXAMPLES=OFF
-        -S ${{ github.workspace }}
+      run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -DJUCE_BUILD_EXAMPLES=OFF -DCMAKE_OSX_ARCHITECTURES=arm64;x86_64 -S ${{ github.workspace }}
 
-        
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
@@ -71,3 +89,14 @@ jobs:
       # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --build-config ${{ matrix.build_type }}
+      
+
+
+    - name:
+
+    - name: Create Windows installer
+      if: matrix.os == "windows-latest"
+      run: |
+        echo '
+        [Setup]
+        AppName
