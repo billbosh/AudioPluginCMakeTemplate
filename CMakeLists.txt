@@ -1,23 +1,11 @@
 cmake_minimum_required(VERSION 3.24)
 
-# Change to your project name
+# Set project enviroment variables
+set(PRODUCT_NAME AudioPluginCMakeTemplateProduct)
+set(VERSION v0.0.1)
+set(COMPANY_NAME billbosh)
 set(FORMATS Standalone AU VST3)
-project(AudioPluginCMakeTemplate VERSION 0.0.1)
-
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_XCODE_GENERATE_SCHEME OFF)
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-# We're going to use CPM as our package manager to bring in JUCE
-# Check to see if we have CPM installed already.  Bring it in if we don't.
-set(CPM_DOWNLOAD_VERSION 0.34.0)
-set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-
-if (NOT EXISTS ${CPM_DOWNLOAD_LOCATION})
-    message(STATUS "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
-    file(DOWNLOAD https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake ${CPM_DOWNLOAD_LOCATION})
-endif ()
+project(AudioPluginCMakeTemplate)
 
 if ((DEFINED ENV{CI}))
     set (env_file "${PROJECT_SOURCE_DIR}/.env")
@@ -28,6 +16,22 @@ if ((DEFINED ENV{CI}))
     file(APPEND "${env_file}" "PRODUCT_NAME=${PRODUCT_NAME}\n")
     file(APPEND "${env_file}" "VERSION=${CURRENT_VERSION}\n")
     file(APPEND "${env_file}" "COMPANY_NAME=${COMPANY_NAME}\n")
+endif ()
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_XCODE_GENERATE_SCHEME OFF)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+# We're going to use CPM as our package manager to bring in JUCE
+# Check to see if we have CPM installed already.  Bring it in if we don't.
+set(CPM_DOWNLOAD_VERSION 0.34.0)
+set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
+
+
+
+if (NOT EXISTS ${CPM_DOWNLOAD_LOCATION})
+    message(STATUS "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
+    file(DOWNLOAD https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake ${CPM_DOWNLOAD_LOCATION})
 endif ()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
@@ -56,7 +60,7 @@ set(SourceFiles
 
 # Change these to your own preferences
 juce_add_plugin(${PROJECT_NAME}
-        COMPANY_NAME billbosh
+        COMPANY_NAME ${COMPANY_NAME}
         IS_SYNTH FALSE
         NEEDS_MIDI_INPUT FALSE
         NEEDS_MIDI_OUTPUT FALSE
