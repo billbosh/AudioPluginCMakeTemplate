@@ -19,11 +19,17 @@ if (NOT EXISTS ${CPM_DOWNLOAD_LOCATION})
     file(DOWNLOAD https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake ${CPM_DOWNLOAD_LOCATION})
 endif ()
 
-# bad not good
-# if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
-#    message("Building for Apple Sillicon")
-#    set(CMAKE_OSX_ARCHITECTURES arm64)
-# endif ()
+if ((DEFINED ENV{CI}))
+    set (env_file "${PROJECT_SOURCE_DIR}/.env")
+    message ("Writing ENV file for CI: ${env_file}")
+
+    # the first call truncates, the rest append
+    file(WRITE  "${env_file}" "PROJECT_NAME=${PROJECT_NAME}\n")
+    file(APPEND "${env_file}" "PRODUCT_NAME=${PRODUCT_NAME}\n")
+    file(APPEND "${env_file}" "VERSION=${CURRENT_VERSION}\n")
+    file(APPEND "${env_file}" "BUNDLE_ID=${BUNDLE_ID}\n")
+    file(APPEND "${env_file}" "COMPANY_NAME=${COMPANY_NAME}\n")
+endif ()
 
 include(${CPM_DOWNLOAD_LOCATION})
 
