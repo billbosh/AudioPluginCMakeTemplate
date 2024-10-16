@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.24)
 
 # Set project enviroment variables
 set(PRODUCT_NAME AudioPluginCMakeTemplateProduct)
-set(PROJECT_VERSION v0.0.1)
+# set(PROJECT_VERSION v0.0.1)
 set(COMPANY_NAME billbosh)
 set(FORMATS Standalone AU VST3)
-project(AudioPluginCMakeTemplate)
+project(AudioPluginCMakeTemplate VERSION v0.0.1)
 
 if ((DEFINED ENV{CI}))
     set (env_file "${PROJECT_SOURCE_DIR}/.env")
