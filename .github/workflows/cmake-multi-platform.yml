@@ -91,8 +91,8 @@ jobs:
               ${CURRENT_VERSION}
               ${COMPANY_NAME}"
 
-    - name: Create Windows installer
-      if: runner.os == "Windows"
+    - name: Create Installers
+      if: matrix.os == 'windows-latest'
       run: |
         echo '
         [Setup]
@@ -107,7 +107,7 @@ jobs:
         [Files]
         Source: "build\${Project_NAME}_artefacts\VST3\${Project_NAME}.vst3; DestDir: "{app}"; Flags; ignoreversion
         ' > installer.iss
-
+        
         mkdir -p instller
         wget https://jrsoftware.org/download.php/is.exe -O installer/inno_setup.exe
         wine installer/inno_setup.exe /S /D=$HOME/inno_setup
