@@ -90,7 +90,7 @@ jobs:
       run: |
         echo '
         [Setup]
-        AppName=${Project_NAME}
+        AppName=${PROJECT_NAME}
         AppVersion=1.0
         DefaultDirName={pf}\Common Files\VST3
         OutputDir=output
