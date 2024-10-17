@@ -72,7 +72,7 @@ jobs:
       run: ctest --build-config ${{ matrix.build_type }}
 
     - name: Build macos pkg installers
-      if: matrix.os == "macos-latest"
+      if: runner.os == 'macOS'
       shell: bash
       run: |
         pkgbuild --component "build/AudioPluginCMakeTemplate_artefacts/Release/VST3/AudioPluginCMakeTemplate.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" AudioPluginCMakeTemplate-VST3-Installer.pkg
