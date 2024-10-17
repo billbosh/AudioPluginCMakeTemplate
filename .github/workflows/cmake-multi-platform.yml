@@ -89,14 +89,18 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         echo '
+        #define Version Trim(FileRead(FileOpen("..\VERSION")))
+        #define ProjectName GetEnv('PROJECT_NAME')
+        #define ProductName GetEnv('PRODUCT_NAME')
+        #define Publisher GetEnv('COMPANY_NAME')
+        #define Year GetDateTimeString("yyyy","","")
+        
         [Setup]
-        AppName="{#GetEnv (PRODUCT_NAME) }"
-        AppVersion="{#GetEnv (PRODUCT_VERSION) }"
-        DefaultDirName={pf}\Common Files\VST3
-        OutputDir=output
-        OutputBaseFilename="{#GetEnv (PRODUCT_NAME) }"
-        Compression=lzma
-        SolidCompression=yes
+        AppName={#ProductName}
+        AppVersion={#Version}
+        AppPublisher={#Publisher}
+        OutputBaseFilename={#ProductName}-{#Version}-Windows
+        DefaultDirName="{commoncf64}\VST3\{#ProductName}.vst3"       
 
         [Files]
         Source: "build\${Project_NAME}_artefacts\VST3\${Project_NAME}.vst3; DestDir: "{app}"; Flags; ignoreversion
