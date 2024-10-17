@@ -90,7 +90,7 @@ jobs:
         pkgbuild --component "build/$PLUGIN_NAME_artefacts/Release/AU/$PLUGIN_NAME.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/$PLUGIN_NAME-AU-Installer-MacOS.pkg
 
     - name: Create windows inno setup installer
-      if: runner,os == 'Windows'
+      if: runner.os == 'Windows'
       shell: bash
       run: |
         echo '
