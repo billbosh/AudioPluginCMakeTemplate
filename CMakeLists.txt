@@ -8,17 +8,6 @@ set(PRODUCT_NAME AudioPluginCMakeTemplateProduct)
 set(COMPANY_NAME billbosh)
 set(FORMATS Standalone AU VST3)
 
-if ((DEFINED ENV{CI}))
-    set (env_file "${PROJECT_SOURCE_DIR}/.env")
-    message ("Writing ENV file for CI: ${env_file}")
-
-    # the first call truncates, the rest append
-    file(WRITE  "${env_file}" "PROJECT_NAME=${PROJECT_NAME}\n")
-    file(APPEND "${env_file}" "PRODUCT_NAME=${PRODUCT_NAME}\n")
-    file(APPEND "${env_file}" "VERSION=${PROJECT_VERSION}\n")
-    file(APPEND "${env_file}" "COMPANY_NAME=${COMPANY_NAME}\n")
-endif ()
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_XCODE_GENERATE_SCHEME OFF)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -27,8 +16,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Check to see if we have CPM installed already.  Bring it in if we don't.
 set(CPM_DOWNLOAD_VERSION 0.34.0)
 set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-
-
 
 if (NOT EXISTS ${CPM_DOWNLOAD_LOCATION})
     message(STATUS "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
