@@ -90,11 +90,11 @@ jobs:
       run: |
         echo '
         [Setup]
-        AppName=${PROJECT_NAME}
-        AppVersion=1.0
+        AppName=${PRODUCT_NAME}
+        AppVersion=${PROJECT_VERSION}
         DefaultDirName={pf}\Common Files\VST3
         OutputDir=output
-        OutputBaseFilename=MyPlugin_Win_Installer
+        OutputBaseFilename=${PRODUCT_NAME}
         Compression=lzma
         SolidCompression=yes
 
