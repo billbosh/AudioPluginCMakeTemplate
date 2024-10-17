@@ -90,11 +90,11 @@ jobs:
       run: |
         echo '
         [Setup]
-        AppName="{#GetEnv (env.PRODUCT_NAME) }"
-        AppVersion="{#GetEnv (env.PRODUCT_VERSION) }"
+        AppName="{#GetEnv (PRODUCT_NAME) }"
+        AppVersion="{#GetEnv (PRODUCT_VERSION) }"
         DefaultDirName={pf}\Common Files\VST3
         OutputDir=output
-        OutputBaseFilename="{#GetEnv (env.PRODUCT_NAME) }"
+        OutputBaseFilename="{#GetEnv (PRODUCT_NAME) }"
         Compression=lzma
         SolidCompression=yes
 
