@@ -109,6 +109,12 @@ jobs:
         [Files]
         Source: "build/${{ env.PLUGIN_NAME }}_artefacts/Release/VST3/${{ env.PLUGIN_NAME }}.vst3"
         ' > packaging\installer.iss
+
+        [Run]
+        Filename: "{cmd}"; \
+          WorkingDir: "{commoncf64}\VST3"; \
+          Parameters: "/C mklink /D ""{commoncf64}\VST3\${{ env.PLUGIN_NAME }}Data"" ""{commonappdata}\${{ env.PLUGIN_NAME }}"""; \
+          Flags: runascurrentuser; Components: vst3
         
         iscc "packaging\installer.iss"
     
