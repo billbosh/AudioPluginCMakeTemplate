@@ -73,6 +73,7 @@ jobs:
 
     - name: Build macos pkg installers
       if: matrix.os == "macos-latest"
+      shell: bash
       run: |
         pkgbuild --component "build/AudioPluginCMakeTemplate_artefacts/Release/VST3/AudioPluginCMakeTemplate.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" AudioPluginCMakeTemplate-VST3-Installer.pkg
         pkgbuild --component "build/AudioPluginCMakeTemplate_artefacts/Release/VST3/AudioPluginCMakeTemplate.component" --install-location "/Library/Audio/Plug-Ins/Components" AudioPluginCMakeTemplate-AU-Installer.pkg
