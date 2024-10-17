@@ -8,6 +8,11 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  PLUGIN_NAME: AudioPluginCMakeTemplate
+  VERSION: 0.0.1
+  
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -73,11 +78,33 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --build-config ${{ matrix.build_type }}
 
-    - name: Build macos pkg installers
+    - name: Make packaging dir
+      shell: bash
+      run: mkdir packaging
+
+    - name: Create macos pkg installers
       if: runner.os == 'macOS'
       shell: bash
       run: |
-        pkgbuild --component "build/AudioPluginCMakeTemplate_artefacts/Release/VST3/AudioPluginCMakeTemplate.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" AudioPluginCMakeTemplate-VST3-Installer.pkg
-        pkgbuild --component "build/AudioPluginCMakeTemplate_artefacts/Release/AU/AudioPluginCMakeTemplate.component" --install-location "/Library/Audio/Plug-Ins/AU" AudioPluginCMakeTemplate-AU-Installer.pkg
+        pkgbuild --component "build/$PLUGIN_NAME_artefacts/Release/VST3/$PLUGIN_NAME.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" packaging/$PLUGIN_NAME-VST3-Installer-MacOS.pkg
+        pkgbuild --component "build/$PLUGIN_NAME_artefacts/Release/AU/$PLUGIN_NAME.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/$PLUGIN_NAME-AU-Installer-MacOS.pkg
 
-      
+    - name: Create windows inno setup installer
+      if: runner,os == 'Windows'
+      shell: bash
+      run: |
+        echo '
+        [Setup]
+        AppName=InnoExampleInstaller
+        AppVersion=1.0
+        DefaultDirName={cf}\VST3
+        Compression=lzma2
+        SolidCompression=yes
+        OutputBaseFilename=$PLUGIN_NAME-VST3-Installer-Windows
+        OutputDir=.
+        
+        [Files]
+        Source: "build/$PLUGIN_NAME_artefacts/Release/VST3/$PLUGIN_NAME.vst3"
+        ' > installer.iss
+
+        iscc "packaging\installer.iss"
