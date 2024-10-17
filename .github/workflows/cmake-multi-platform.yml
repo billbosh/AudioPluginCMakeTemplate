@@ -89,7 +89,7 @@ jobs:
         pkgbuild --component "build/{$PLUGIN_NAME}_artefacts/Release/VST3/$PLUGIN_NAME.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" packaging/{$PLUGIN_NAME}-VST3-Installer-MacOS.pkg
         pkgbuild --component "build/{$PLUGIN_NAME}_artefacts/Release/AU/$PLUGIN_NAME.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/{$PLUGIN_NAME}-AU-Installer-MacOS.pkg
 
-    - name: Create windows inno setup installer
+    - name: Create installer.iss
       if: runner.os == 'Windows'
       shell: bash
       run: |
@@ -108,4 +108,20 @@ jobs:
         Source: "build/{$PLUGIN_NAME}_artefacts/Release/VST3/$PLUGIN_NAME.vst3"
         ' > packaging\installer.iss
 
-        iscc "packaging\installer.iss"
+    - name: Compile .ISS to .EXE Installer
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+      with:
+        path: packaging\installer.iss
+        options: /O+
+
+    - name: Move .exe intaller to packaging dir
+      run: mv "Output/{$PLUGIN_NAME}-VST3-Installer-Windows.exe" "packaging"
+
+    - name: View packaging dir
+      shell: bash
+      run: |
+        search_dir=packaging
+        for entry in "$search_dir"/*
+        do
+          echo "$entry"
+        done
