@@ -108,11 +108,7 @@ jobs:
         Source: "build/$PLUGIN_NAME_artefacts/Release/VST3/$PLUGIN_NAME.vst3"
         ' > packaging\installer.iss
 
-    - name: Compile .ISS to .EXE Installer
-      uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
-      with:
-        path: packaging\installer.iss
-        options: /O+
+        iscc "packaging\installer.iss"
 
     - name: Move .exe intaller to packaging dir
       run: mv "Output/$PLUGIN_NAME-VST3-Installer-Windows.exe" "packaging"
