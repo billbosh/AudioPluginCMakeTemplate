@@ -84,15 +84,15 @@ jobs:
       run: mkdir packaging
 
     - name: Create macos pkg installers
+      if: runner.os == 'macOS'
       shell: bash
       run: |
-        if [ "$RUNNER_OS" == "macOS" ]; then
-          pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/VST3/${{ env.PLUGIN_NAME }}.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" packaging/${{ env.PLUGIN_NAME }}-VST3-Installer-MacOS.pkg
-          pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/AU/${{ env.PLUGIN_NAME }}.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/${{ env.PLUGIN_NAME }}-AU-Installer-MacOS.pkg
-        fi
+        pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/VST3/${{ env.PLUGIN_NAME }}.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" packaging/${{ env.PLUGIN_NAME }}-VST3-Installer-MacOS.pkg
+        pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/AU/${{ env.PLUGIN_NAME }}.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/${{ env.PLUGIN_NAME }}-AU-Installer-MacOS.pkg
+        
 
     - name: Create installer.iss
-      if: runner.os == "Windows"
+      if: runner.os == 'Windows'
       shell: bash
       run: |
         echo '
@@ -114,7 +114,7 @@ jobs:
     
 
     - name: Move .exe intaller to packaging dir
-      if: runner.os == "Windows"
+      if: runner.os == 'Windows'
       shell: bash
       run: |
         mv "Output/${{ env.PLUGIN_NAME }}-VST3-Installer-Windows.exe" "packaging"
