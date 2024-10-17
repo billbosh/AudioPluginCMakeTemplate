@@ -13,6 +13,7 @@ env:
   VERSION: 0.0.1
   COMPANY: billbosh
 
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -86,8 +87,8 @@ jobs:
       if: runner.os == 'macOS'
       shell: bash
       run: |
-        pkgbuild --component "build/$PLUGIN_NAME_artefacts/Release/VST3/$PLUGIN_NAME.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" packaging/$PLUGIN_NAME-VST3-Installer-MacOS.pkg
-        pkgbuild --component "build/$PLUGIN_NAME_artefacts/Release/AU/$PLUGIN_NAME.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/$PLUGIN_NAME-AU-Installer-MacOS.pkg
+        pkgbuild --component "build/{{ $PLUGIN_NAME }}_artefacts/Release/VST3/{{ $PLUGIN_NAME }}.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" packaging/{{ $PLUGIN_NAME }}-VST3-Installer-MacOS.pkg
+        pkgbuild --component "build/{{ $PLUGIN_NAME }}_artefacts/Release/AU/{{ $PLUGIN_NAME }}.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/{{ $PLUGIN_NAME }}-AU-Installer-MacOS.pkg
 
     - name: Create installer.iss
       if: runner.os == 'Windows'
@@ -95,23 +96,23 @@ jobs:
       run: |
         echo '
         [Setup]
-        AppName=$PLUGIN_NAME
-        AppVersion=$VERSION
-        AppPublisher=$COMPANY
-        DefaultDirName="commoncf64\VST3\$PLUGIN_NAME.vst3"
+        AppName={{ $PLUGIN_NAME }}
+        AppVersion={{ $VERSION }}
+        AppPublisher={{ $COMPANY }}
+        DefaultDirName="commoncf64\VST3{{ $PLUGIN_NAME }}.vst3"
         Compression=lzma2
         SolidCompression=yes
-        OutputBaseFilename=$PLUGIN_NAME-VST3-Installer-Windows
+        OutputBaseFilename={{ $PLUGIN_NAME }}-VST3-Installer-Windows
         OutputDir=.
         
         [Files]
-        Source: "build/$PLUGIN_NAME_artefacts/Release/VST3/$PLUGIN_NAME.vst3"
+        Source: "build/{{ $PLUGIN_NAME }}_artefacts/Release/VST3/$PLUGIN_NAME.vst3"
         ' > packaging\installer.iss
 
         iscc "packaging\installer.iss"
 
     - name: Move .exe intaller to packaging dir
-      run: mv "Output/$PLUGIN_NAME-VST3-Installer-Windows.exe" "packaging"
+      run: mv "Output/{{ $PLUGIN_NAME }}-VST3-Installer-Windows.exe" "packaging"
 
     - name: View packaging dir
       shell: bash
