@@ -4,9 +4,8 @@ project(AudioPluginCMakeTemplate VERSION 0.0.1)
 
 # Set project enviroment variables
 set(PRODUCT_NAME AudioPluginCMakeTemplateProduct)
-# set(PROJECT_VERSION v0.0.1)
 set(COMPANY_NAME billbosh)
-set(FORMATS Standalone AU VST3)
+set(FORMATS AU VST3)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_XCODE_GENERATE_SCHEME OFF)
@@ -23,8 +22,8 @@ if (NOT EXISTS ${CPM_DOWNLOAD_LOCATION})
 endif ()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
-   message("Building for Apple Sillicon")
-   set(-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64)
+   message("Building macos universal binaries")
+   set(-DCMAKE_OSX_ARCHITECTURES=arm64;x86_65)
 endif ()
 
 include(${CPM_DOWNLOAD_LOCATION})
