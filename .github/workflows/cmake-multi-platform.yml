@@ -84,35 +84,41 @@ jobs:
       run: mkdir packaging
 
     - name: Create macos pkg installers
-      if: runner.os == 'macOS'
       shell: bash
       run: |
-        pkgbuild --component "build/${{ PLUGIN_NAME }}_artefacts/Release/VST3/${{ PLUGIN_NAME }}.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" packaging/${{ PLUGIN_NAME }}-VST3-Installer-MacOS.pkg
-        pkgbuild --component "build/${{ PLUGIN_NAME }}_artefacts/Release/AU/${{ PLUGIN_NAME }}.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/${{ PLUGIN_NAME }}-AU-Installer-MacOS.pkg
+        if [ "$RUNNER_OS" == "macOS" ]; then
+          pkgbuild --component "build/${{ PLUGIN_NAME }}_artefacts/Release/VST3/${{ PLUGIN_NAME }}.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" packaging/${{ PLUGIN_NAME }}-VST3-Installer-MacOS.pkg
+          pkgbuild --component "build/${{ PLUGIN_NAME }}_artefacts/Release/AU/${{ PLUGIN_NAME }}.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/${{ PLUGIN_NAME }}-AU-Installer-MacOS.pkg
+        fi
 
     - name: Create installer.iss
-      if: runner.os == 'Windows'
       shell: bash
       run: |
-        echo '
-        [Setup]
-        AppName=$PLUGIN_NAME
-        AppVersion=$VERSION
-        AppPublisher=$COMPANY
-        DefaultDirName="commoncf64\VST3\$PLUGIN_NAME.vst3"
-        Compression=lzma2
-        SolidCompression=yes
-        OutputBaseFilename=$PLUGIN_NAME-VST3-Installer-Windows
-        OutputDir=.
-        
-        [Files]
-        Source: "build/${{ PLUGIN_NAME }}_artefacts/Release/VST3/$PLUGIN_NAME.vst3"
-        ' > packaging\installer.iss
-
-        iscc "packaging\installer.iss"
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          echo '
+          [Setup]
+          AppName=${{ PLUGIN_NAME }}
+          AppVersion=${{ VERSION }}
+          AppPublisher=${{ COMPANY }}
+          DefaultDirName="commoncf64\VST3\${{ PLUGIN_NAME }}.vst3"
+          Compression=lzma2
+          SolidCompression=yes
+          OutputBaseFilename=${{ PLUGIN_NAME }}-VST3-Installer-Windows
+          OutputDir=.
+          
+          [Files]
+          Source: "build/${{ PLUGIN_NAME }}_artefacts/Release/VST3/${{ PLUGIN_NAME }}.vst3"
+          ' > packaging\installer.iss
+          
+          iscc "packaging\installer.iss"
+        fi
 
     - name: Move .exe intaller to packaging dir
-      run: mv "Output/${{ PLUGIN_NAME }}-VST3-Installer-Windows.exe" "packaging"
+      shell: bash
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          mv "Output/${{ PLUGIN_NAME }}-VST3-Installer-Windows.exe" "packaging"
+        fi
 
     - name: View packaging dir
       shell: bash
