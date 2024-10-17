@@ -68,48 +68,66 @@ jobs:
       # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --build-config ${{ matrix.build_type }}
-
-    - name: Read in .env from CMake # see GitHubENV.cmake
+      
+    - name: Create DMG, Notarize and Staple (macOS)
+      if: ${{ matrix.name == 'macOS' }}
       run: |
-        cat .env # show us the config
-        cat .env >> $GITHUB_ENV # pull in our PRODUCT_NAME, etc
+        # workaround for https://github.com/LinusU/node-appdmg/issues/234
+        python3 -m pip install setuptools --break-system-packages
+        npm install -g appdmg
+        mkdir -p packaging/dmg
+  
+        # Create directories for the dmg symlinks
+        sudo mkdir -m 755 -p /Library/Audio/Plug-Ins/Components && sudo mkdir -m 755 -p /Library/Audio/Plug-Ins/VST3
+        ln -s /Library/Audio/Plug-Ins/Components "packaging/dmg/Your Mac's Component folder"
+        ln -s /Library/Audio/Plug-Ins/VST3 "packaging/dmg/Your Mac's VST3 folder"
+        mv "${{ env.VST3_PATH }}" packaging/dmg
+        mv "${{ env.AU_PATH }}" packaging/dmg
+  
+        # Run appdmg to create the .dmg
+        cd packaging && appdmg dmg.json "${{ env.ARTIFACT_NAME}}.dmg"
 
-    - name: Set additional env vars for next steps
-      run: |
-        echo ARTIFACTS_PATH="${{ steps.strings.outputs.build-output-dir }}/${{ env.PROJECT_NAME }}_artefacts/"
-        echo "ARTIFACTS_PATH=$ARTIFACTS_PATH" >> $GITHUB_ENV
-        echo "VST3_PATH=$ARTIFACTS_PATH/VST3/${{ env.PRODUCT_NAME }}.vst3" >> $GITHUB_ENV
-        echo "AU_PATH=$ARTIFACTS_PATH/AU/${{ env.PRODUCT_NAME }}.component" >> $GITHUB_ENV
-        echo "AUV3_PATH=$ARTIFACTS_PATH/AUv3/${{ env.PRODUCT_NAME }}.appex" >> $GITHUB_ENV
-        echo "STANDALONE_PATH=$ARTIFACTS_PATH/Standalone/${{ env.PRODUCT_NAME }}.app" >> $GITHUB_ENV
-        echo "ARTIFACT_NAME=${{ env.PRODUCT_NAME }}-${{ env.VERSION }}-${{ matrix.name }}" >> $GITHUB_ENV
+    # - name: Read in .env from CMake # see GitHubENV.cmake
+    #   run: |
+    #     cat .env # show us the config
+    #     cat .env >> $GITHUB_ENV # pull in our PRODUCT_NAME, etc
+
+    # - name: Set additional env vars for next steps
+    #   run: |
+    #     echo ARTIFACTS_PATH="${{ steps.strings.outputs.build-output-dir }}/${{ env.PROJECT_NAME }}_artefacts/"
+    #     echo "ARTIFACTS_PATH=$ARTIFACTS_PATH" >> $GITHUB_ENV
+    #     echo "VST3_PATH=$ARTIFACTS_PATH/VST3/${{ env.PRODUCT_NAME }}.vst3" >> $GITHUB_ENV
+    #     echo "AU_PATH=$ARTIFACTS_PATH/AU/${{ env.PRODUCT_NAME }}.component" >> $GITHUB_ENV
+    #     echo "AUV3_PATH=$ARTIFACTS_PATH/AUv3/${{ env.PRODUCT_NAME }}.appex" >> $GITHUB_ENV
+    #     echo "STANDALONE_PATH=$ARTIFACTS_PATH/Standalone/${{ env.PRODUCT_NAME }}.app" >> $GITHUB_ENV
+    #     echo "ARTIFACT_NAME=${{ env.PRODUCT_NAME }}-${{ env.VERSION }}-${{ matrix.name }}" >> $GITHUB_ENV
 
     
-    - name: Create Installers
-      if: matrix.os == 'windows-latest'
-      run: |
-        echo '
-        #define Version Trim(FileRead(FileOpen("..\VERSION")))
-        #define ProjectName GetEnv('PROJECT_NAME')
-        #define ProductName GetEnv('PRODUCT_NAME')
-        #define Publisher GetEnv('COMPANY_NAME')
-        #define Year GetDateTimeString("yyyy","","")
+    # - name: Create Installers
+    #   if: matrix.os == 'windows-latest'
+    #   run: |
+    #     echo '
+    #     #define Version Trim(FileRead(FileOpen("..\VERSION")))
+    #     #define ProjectName GetEnv('PROJECT_NAME')
+    #     #define ProductName GetEnv('PRODUCT_NAME')
+    #     #define Publisher GetEnv('COMPANY_NAME')
+    #     #define Year GetDateTimeString("yyyy","","")
         
-        [Setup]
-        AppName={#ProductName}
-        AppVersion={#Version}
-        AppPublisher={#Publisher}
-        OutputBaseFilename={#ProductName}-{#Version}-Windows
-        DefaultDirName="{commoncf64}\VST3\{#ProductName}.vst3"       
+    #     [Setup]
+    #     AppName={#ProductName}
+    #     AppVersion={#Version}
+    #     AppPublisher={#Publisher}
+    #     OutputBaseFilename={#ProductName}-{#Version}-Windows
+    #     DefaultDirName="{commoncf64}\VST3\{#ProductName}.vst3"       
 
-        [Files]
-        Source: "build\${Project_NAME}_artefacts\VST3\${Project_NAME}.vst3; DestDir: "{app}"; Flags; ignoreversion
-        ' > installer.iss
+    #     [Files]
+    #     Source: "build\${Project_NAME}_artefacts\VST3\${Project_NAME}.vst3; DestDir: "{app}"; Flags; ignoreversion
+    #     ' > installer.iss
         
-    - name: Inno Setup Action
-      if: matrix.os == 'windows-latest'
-      uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
-      with:
-          path: installer.iss
-          options: /O+
+    # - name: Inno Setup Action
+    #   if: matrix.os == 'windows-latest'
+    #   uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+    #   with:
+    #       path: installer.iss
+    #       options: /O+
             
