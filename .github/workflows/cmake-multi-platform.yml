@@ -96,13 +96,13 @@ jobs:
       run: |
         echo '
         [Setup]
-        AppName=${{ PLUGIN_NAME }}
-        AppVersion=${{ VERSION }}
-        AppPublisher=${{ COMPANY }}
-        DefaultDirName="commoncf64\VST3\${{ PLUGIN_NAME }}.vst3"
+        AppName=$PLUGIN_NAME
+        AppVersion=$VERSION
+        AppPublisher=$COMPANY
+        DefaultDirName="commoncf64\VST3\$PLUGIN_NAME.vst3"
         Compression=lzma2
         SolidCompression=yes
-        OutputBaseFilename=${{ PLUGIN_NAME }}-VST3-Installer-Windows
+        OutputBaseFilename=$PLUGIN_NAME-VST3-Installer-Windows
         OutputDir=.
         
         [Files]
