@@ -148,7 +148,7 @@ jobs:
       if: runner.os == 'macOS'
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ github.token }}$
+        GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
@@ -159,7 +159,7 @@ jobs:
       if: runner.os == 'macOS'
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ github.token }}$
+        GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
@@ -170,7 +170,7 @@ jobs:
       if: runner.os == 'Windows'
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ github.token }}$
+        GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
