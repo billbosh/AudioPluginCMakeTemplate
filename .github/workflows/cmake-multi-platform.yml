@@ -167,6 +167,11 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
+
+      - name: View dir
+        shell: bash
+        run: |
+          echo *
           
       - name: Release
         uses: actions/create-release@v1
