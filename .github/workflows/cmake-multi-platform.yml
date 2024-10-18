@@ -136,28 +136,28 @@ jobs:
       if: runner.os == 'macOS'
       uses: actions/upload-artifact@v4
       with:
-        name: CHANGELOG
+        name: CHANGELOG.md
         path: CHANGELOG.md
       
     - name: Upload VST3 pkg installer to artifacts (macOS)
       if: runner.os == 'macOS'
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS
+        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
         path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
 
     - name: Upload AU pkg installer to artifacts (macOS)
       if: runner.os == 'macOS'
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS
+        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
         path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
 
     - name: Upload VST3 pkg installer to artifacts (Windows)
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows
+        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
         path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
 
   Release:
@@ -176,7 +176,7 @@ jobs:
           prerelease: false
           release_name: ${{ env.PLUGIN_NAME }}
           tag_name: ${{ env.VERSION }}
-          body_path: CHANGELOG
+          body_path: CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ github.token }}
   
