@@ -181,7 +181,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
   
       - name: Upload VST3 pkg installer to release (macOS)
-        if: runner.os == 'macOS'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -192,7 +191,6 @@ jobs:
           asset_content_type: application/octet-stream
   
       - name: Upload AU pkg installer to release (macOS)
-        if: runner.os == 'macOS'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -203,7 +201,6 @@ jobs:
           asset_content_type: application/octet-stream
   
       - name: Upload VST3 exe installer to release (Windows)
-        if: runner.os == 'Windows'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
