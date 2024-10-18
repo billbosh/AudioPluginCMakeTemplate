@@ -114,7 +114,7 @@ jobs:
           WorkingDir: "{commoncf64}\VST3"; \
           Parameters: "/C mklink /D ""{commoncf64}\VST3\${{ env.PLUGIN_NAME }}Data"" ""{commonappdata}\${{ env.PLUGIN_NAME }}"""; \
           Flags: runascurrentuser; Components: vst3
-        ' > packaging\installer.iss
+        ' > packaging/installer.iss
 
     - name: View packaging dir
       shell: bash
@@ -128,7 +128,7 @@ jobs:
     - name: Package with installer.iss
       if: runner.os == 'Windows'
       shell: bash
-      run: iscc "packaging\installer.iss"
+      run: iscc "packaging/installer.iss"
 
     - name: Move .exe intaller to packaging dir
       if: runner.os == 'Windows'
