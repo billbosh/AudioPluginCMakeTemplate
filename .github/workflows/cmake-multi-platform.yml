@@ -158,7 +158,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows
-        path: build\${{ env.PLUGIN_NAME }}_artefacts\Release\VST3\${{ env.PLUGIN_NAME }}.vst3\Contents\x86_64-win\${{ env.PLUGIN_NAME }}.vst3
+        path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
 
   Release:
     name: Release
@@ -168,11 +168,6 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
 
-      - name: View dir
-        shell: bash
-        run: |
-          echo *
-          
       - name: Release
         uses: actions/create-release@v1
         id: create_release
@@ -181,7 +176,7 @@ jobs:
           prerelease: false
           release_name: ${{ env.PLUGIN_NAME }}
           tag_name: ${{ env.VERSION }}
-          body_path: CHANGELOG.md
+          body_path: CHANGELOG
         env:
           GITHUB_TOKEN: ${{ github.token }}
   
