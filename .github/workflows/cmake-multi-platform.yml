@@ -131,7 +131,14 @@ jobs:
         do
           echo "$entry"
         done
-        
+
+    - name: Upload CHANGELOG.md to artifacts (macOS)
+      if: runner.os == 'macOS'
+      uses: actions/upload-artifact@v4
+      with:
+        name: CHANGELOG
+        path: CHANGELOG.md
+      
     - name: Upload VST3 pkg installer to artifacts (macOS)
       if: runner.os == 'macOS'
       uses: actions/upload-artifact@v4
