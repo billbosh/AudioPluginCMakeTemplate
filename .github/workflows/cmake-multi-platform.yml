@@ -108,12 +108,12 @@ jobs:
         
         [Files]
         Source: "..\build\${{ env.PLUGIN_NAME }}_artefacts\Release\VST3\${{ env.PLUGIN_NAME }}.vst3\*"; DestDir: "{commoncf64}\VST3\${{ env.PLUGIN_NAME }}.vst3\";
-        ' > packaging/installer.iss
+        ' > installer.iss
 
     - name: View packaging dir
       shell: bash
       run: |
-        echo "$(<packaging/installer.iss )"
+        echo "$(<installer.iss )"
         search_dir=packaging
         for entry in "$search_dir"/*
         do
@@ -123,7 +123,7 @@ jobs:
     - name: Package with installer.iss
       if: runner.os == 'Windows'
       shell: bash
-      run: iscc "packaging/installer.iss"
+      run: iscc "installer.iss"
 
     - name: Move .exe installer to packaging dir
       if: runner.os == 'Windows'
