@@ -115,6 +115,7 @@ jobs:
     - name: View packaging dir
       shell: bash
       run: |
+        echo "$(<packaging/installer.iss )"
         search_dir=packaging
         for entry in "$search_dir"/*
         do
