@@ -150,7 +150,7 @@ jobs:
         path: "packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe"
 
   release:
-    if: contains(github.ref, 'tags/v')
+    if: contains(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
 
     steps:
