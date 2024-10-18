@@ -13,7 +13,6 @@ env:
   VERSION: 0.0.1
   COMPANY: billbosh
 
-
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -87,10 +86,23 @@ jobs:
       if: runner.os == 'macOS'
       shell: bash
       run: |
-        pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/VST3/${{ env.PLUGIN_NAME }}.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" packaging/${{ env.PLUGIN_NAME }}-VST3-Installer-MacOS.pkg
-        pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/AU/${{ env.PLUGIN_NAME }}.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/${{ env.PLUGIN_NAME }}-AU-Installer-MacOS.pkg
-        
+        pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/VST3/${{ env.PLUGIN_NAME }}.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
+        pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/AU/${{ env.PLUGIN_NAME }}.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
 
+    - name: Upload VST3 pkg installer (macOS)
+      if: runner.os == 'macOS'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
+        path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
+
+    - name: Upload AU pkg installer (macOS)
+      if: runner.os == 'macOS'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
+        path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
+        
     - name: Create installer.iss
       if: runner.os == 'Windows'
       shell: bash
@@ -103,23 +115,13 @@ jobs:
         DefaultDirName="{commoncf64}\VST3\${{ env.PLUGIN_NAME }}.vst3"
         Compression=lzma2
         SolidCompression=yes
-        OutputBaseFilename=${{ env.PLUGIN_NAME }}-VST3-Installer-Windows
+        OutputBaseFilename=${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows
         OutputDir=.
         
         [Files]
         Source: "build\${{ env.PLUGIN_NAME }}_artefacts\Release\VST3\${{ env.PLUGIN_NAME }}.vst3\Contents\x86_64-win\${{ env.PLUGIN_NAME }}.vst3"; DestDir: "{commoncf64}\VST3\${{ env.PLUGIN_NAME }}.vst3\";
         ' > installer.iss
-
-    - name: View packaging dir
-      shell: bash
-      run: |
-        echo "$(<installer.iss )"
-        search_dir=packaging
-        for entry in "$search_dir"/*
-        do
-          echo "$entry"
-        done
-
+        
     - name: Package with installer.iss
       if: runner.os == 'Windows'
       shell: bash
@@ -129,7 +131,7 @@ jobs:
       if: runner.os == 'Windows'
       shell: bash
       run: |
-        mv "${{ env.PLUGIN_NAME }}-VST3-Installer-Windows.exe" "packaging"
+        mv "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe" "packaging"
 
     - name: View packaging dir
       shell: bash
@@ -139,3 +141,28 @@ jobs:
         do
           echo "$entry"
         done
+  
+    - name: Upload Exe (Windows)
+      if: runner.os == 'Windows
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
+        path: "packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe"
+
+  release:
+    if: contains(github.ref, 'tags/v')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get Artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: true
+          # download-artifact puts these files in their own dirs...
+          # Using globs sidesteps having to pass the version around
+          files: |
+            */*.exe
+            */*.pkg
