@@ -100,7 +100,7 @@ jobs:
         AppName=${{ env.PLUGIN_NAME }}
         AppVersion=${{ env.VERSION }}
         AppPublisher=${{ env.COMPANY }}
-        DefaultDirName="commoncf64\VST3\${{ env.PLUGIN_NAME }}.vst3"
+        DefaultDirName="{commoncf64}\VST3\${{ env.PLUGIN_NAME }}.vst3"
         Compression=lzma2
         SolidCompression=yes
         OutputBaseFilename=${{ env.PLUGIN_NAME }}-VST3-Installer-Windows
