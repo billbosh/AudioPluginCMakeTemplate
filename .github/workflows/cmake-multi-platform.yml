@@ -143,7 +143,7 @@ jobs:
         done
   
     - name: Upload Exe (Windows)
-      if: runner.os == 'Windows
+      if: runner.os == 'Windows'
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
