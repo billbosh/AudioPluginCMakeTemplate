@@ -116,6 +116,15 @@ jobs:
           Flags: runascurrentuser; Components: vst3
         ' > packaging\installer.iss
 
+    - name: View packaging dir
+      shell: bash
+      run: |
+        search_dir=packaging
+        for entry in "$search_dir"/*
+        do
+          echo "$entry"
+        done
+
     - name: Package with installer.iss
       if: runner.os == 'Windows'
       shell: bash
