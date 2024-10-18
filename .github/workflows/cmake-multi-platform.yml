@@ -105,11 +105,12 @@ jobs:
         DefaultDirName="{commoncf64}\VST3\${{ env.PLUGIN_NAME }}.vst3"
         Compression=lzma2
         SolidCompression=yes
+        Uninstallable=no
         OutputBaseFilename=${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows
         OutputDir=.
         
         [Files]
-        Source: "build\${{ env.PLUGIN_NAME }}_artefacts\Release\VST3\${{ env.PLUGIN_NAME }}.vst3\Contents\x86_64-win\${{ env.PLUGIN_NAME }}.vst3"; DestDir: "{commoncf64}\VST3\${{ env.PLUGIN_NAME }}.vst3\";
+        Source: "build\${{ env.PLUGIN_NAME }}_artefacts\Release\VST3\${{ env.PLUGIN_NAME }}.vst3\Contents\x86_64-win\${{ env.PLUGIN_NAME }}.vst3"; DestDir: "{commoncf64}\VST3\";
         ' > installer.iss
         
     - name: Package with installer.iss
@@ -132,6 +133,21 @@ jobs:
           echo "$entry"
         done
 
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-Installers
+        path: packaging/
+
+    - name: Creating packages dir
+      shell: bash
+      run: mkdir packages
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: packages
+        
     - name: Release
       uses: actions/create-release@v1
       id: create_release
@@ -151,7 +167,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
+        asset_path: packages/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
         asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
         asset_content_type: application/octet-stream
 
@@ -162,7 +178,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
+        asset_path: packages/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
         asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
         asset_content_type: application/octet-stream
 
@@ -173,7 +189,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
+        asset_path: packages/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
         asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
         asset_content_type: application/octet-stream
         
