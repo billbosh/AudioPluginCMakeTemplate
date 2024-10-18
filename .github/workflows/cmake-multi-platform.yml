@@ -153,7 +153,7 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
         asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
-        asset_type: application/octet-stream
+        asset_content_type: application/octet-stream
 
     - name: Upload AU pkg installer (macOS)
       if: runner.os == 'macOS'
@@ -164,7 +164,7 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
         asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
-        asset_type: application/octet-stream
+        asset_content_type: application/octet-stream
 
     - name: Upload VST3 exe installer (Windows)
       if: runner.os == 'Windows'
@@ -175,5 +175,5 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
         asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
-        asset_type: application/octet-stream
+        asset_content_type: application/octet-stream
         
