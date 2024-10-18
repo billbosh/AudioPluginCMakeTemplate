@@ -107,7 +107,7 @@ jobs:
         OutputDir=.
         
         [Files]
-        DestDir="{commoncf64}\VST3"
+        DestDir="{app}"
         Source="build/${{ env.PLUGIN_NAME }}_artefacts/Release/VST3/${{ env.PLUGIN_NAME }}.vst3"
         
         ' > packaging/installer.iss
