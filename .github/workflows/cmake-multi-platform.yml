@@ -167,8 +167,6 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
-        # with:
-        #   path: packages
           
       - name: Release
         uses: actions/create-release@v1
