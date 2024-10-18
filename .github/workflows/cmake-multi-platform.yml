@@ -142,7 +142,7 @@ jobs:
         tag_name: ${{ env.VERSION }}
         body_path: CHANGELOG.md
       env:
-        GITHUB_TOKEN: ${{ env.VERSION }}
+        GITHUB_TOKEN: ${{ github.token }}
 
     - name: Upload VST3 pkg installer (macOS)
       if: runner.os == 'macOS'
