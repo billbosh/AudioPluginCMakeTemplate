@@ -140,7 +140,7 @@ jobs:
         draft: true
         prerelease: false
         release_name: ${{ env.PLUGIN_NAME }}
-        tag_name: ${{ github.ref }}
+        tag_name: ${{ env.VERSION }}
         body_path: CHANGELOG.md
       env:
         GITHUB_TOKEN: ${{ env.VERSION }}
