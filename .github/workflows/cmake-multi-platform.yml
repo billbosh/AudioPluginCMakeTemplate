@@ -107,8 +107,8 @@ jobs:
         OutputDir=.
         
         [Files]
-        Source: "build/${{ env.PLUGIN_NAME }}_artefacts/Release/VST3/${{ env.PLUGIN_NAME }}.vst3"
         DestDir: "{commoncf64}\VST3\${{ env.PLUGIN_NAME }}.vst3"
+        Source: "build/${{ env.PLUGIN_NAME }}_artefacts/Release/VST3/${{ env.PLUGIN_NAME }}.vst3"
         
         ' > packaging/installer.iss
 
@@ -126,7 +126,7 @@ jobs:
       shell: bash
       run: iscc "packaging/installer.iss"
 
-    - name: Move .exe intaller to packaging dir
+    - name: Move .exe installer to packaging dir
       if: runner.os == 'Windows'
       shell: bash
       run: |
