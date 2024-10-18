@@ -23,7 +23,7 @@ endif ()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
    message("Building macos universal binaries")
-   set(-DCMAKE_OSX_ARCHITECTURES=arm64;x86_65)
+   set(-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64)
 endif ()
 
 include(${CPM_DOWNLOAD_LOCATION})
