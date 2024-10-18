@@ -129,7 +129,7 @@ jobs:
       if: runner.os == 'Windows'
       shell: bash
       run: |
-        mv "Output/${{ env.PLUGIN_NAME }}-VST3-Installer-Windows.exe" "packaging"
+        mv "${{ env.PLUGIN_NAME }}-VST3-Installer-Windows.exe" "packaging"
 
     - name: View packaging dir
       shell: bash
