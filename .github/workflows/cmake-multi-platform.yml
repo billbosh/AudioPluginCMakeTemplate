@@ -123,15 +123,6 @@ jobs:
       run: |
         mv "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe" "packaging"
 
-    - name: View packaging dir
-      shell: bash
-      run: |
-        search_dir=packaging
-        for entry in "$search_dir"/*
-        do
-          echo "$entry"
-        done
-
     - name: Upload CHANGELOG.md to artifacts (macOS)
       if: runner.os == 'macOS'
       uses: actions/upload-artifact@v4
@@ -160,9 +151,103 @@ jobs:
         name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows
         path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
 
+  MacInstallScript:
+    name: MacInstallScript
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Install Packages
+        shell: bash
+        run: mkdir "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS" "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS"
+
+      - name: Download VST3 pkg artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS
+          path: mkdir "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS"
+
+      - name: Download AU pkg artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS
+          path: "mkdir ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS"
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Create VST3 install script
+        shell: bash
+        runs: |
+          echo '
+          #!/bin/bsh
+
+          open "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg"
+          if [ ! -d ~/Library/Audio/Plug-Ins/Components ]; then
+            mkdir ~/Library/Audio/Plug-Ins/Components;
+          fi
+
+          while true; do
+            echo "Library/Caches checked" 
+            if [ -d "/Library/Caches/${{ env.PLUGIN_NAME }}.component" ]; then
+              echo "Plugin file found in caches"
+              break
+            fi
+            sleep 2
+          done
+
+          cd /Library/Caches
+
+          sudo mv ${{ env.PLUGIN_NAME }}.component ~/Library/Audio/Plug-Ins/Components
+          ' > "{{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS/install-script.sh"
+
+      - name: Create AU install script
+        shell: bash
+        runs: |
+          echo '
+          #!/bin/bsh
+
+          open "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg"
+          if [ ! -d ~/Library/Audio/Plug-Ins/Components ]; then
+            mkdir ~/Library/Audio/Plug-Ins/Components;
+          fi
+
+          while true; do
+            echo "Library/Caches checked" 
+            if [ -d "/Library/Caches/${{ env.PLUGIN_NAME }}.component" ]; then
+              echo "Plugin file found in caches"
+              break
+            fi
+            sleep 2
+          done
+
+          cd /Library/Caches
+
+          sudo mv ${{ env.PLUGIN_NAME }}.component ~/Library/Audio/Plug-Ins/Components
+          ' > "{{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS/install-script.sh"
+
+      - name: Archive VST3 installer
+        shell: bash
+        run: tar -czf ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS
+
+      - name: Archive AU installer
+        shell: bash
+        run: tar -czf ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS
+
+      - name: Upload VST3 .tar.gz installer to artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz
+          path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz
+
+      - name: Upload AU .tar.gz installer to artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz
+          path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz
+
   Release:
     name: Release
-    needs: Build
+    needs: MacInstallScript
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
@@ -180,24 +265,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
   
-      - name: Upload VST3 pkg installer to release (macOS)
+      - name: Upload VST3 .tar.gz installer to release (macOS)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
-          asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
+          asset_path: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz
+          asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz
           asset_content_type: application/octet-stream
   
-      - name: Upload AU pkg installer to release (macOS)
+      - name: Upload AU .tar.gz installer to release (macOS)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
-          asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
+          asset_path: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz
+          asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz
           asset_content_type: application/octet-stream
   
       - name: Upload VST3 exe installer to release (Windows)
