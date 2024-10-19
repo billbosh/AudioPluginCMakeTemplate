@@ -89,8 +89,8 @@ jobs:
       if: runner.os == 'macOS'
       shell: bash
       run: |
-        pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/VST3/${{ env.PLUGIN_NAME }}.vst3" --install-location "/Library/Audio/Plug-Ins/VST3" packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
-        pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/AU/${{ env.PLUGIN_NAME }}.component" --install-location "/Library/Audio/Plug-Ins/AU" packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
+        pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/VST3/${{ env.PLUGIN_NAME }}.vst3" --install-location ~/Library/Audio/Plug-Ins/VST3 packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
+        pkgbuild --component "build/${{ env.PLUGIN_NAME }}_artefacts/Release/AU/${{ env.PLUGIN_NAME }}.component" --install-location ~/Library/Audio/Plug-Ins/Components packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
         
     - name: Create installer.iss
       if: runner.os == 'Windows'
