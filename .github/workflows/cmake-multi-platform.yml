@@ -177,7 +177,7 @@ jobs:
 
       - name: Create VST3 install script
         shell: bash
-        runs: |
+        run: |
           echo '
           #!/bin/bsh
 
@@ -202,7 +202,7 @@ jobs:
 
       - name: Create AU install script
         shell: bash
-        runs: |
+        run: |
           echo '
           #!/bin/bsh
 
