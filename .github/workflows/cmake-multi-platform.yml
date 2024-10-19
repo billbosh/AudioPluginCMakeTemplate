@@ -161,13 +161,13 @@ jobs:
         run: mkdir "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS" "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS"
 
       - name: Download VST3 pkg artifact
-      - uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4
         with:
           name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS
           path: mkdir "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS"
 
       - name: Download AU pkg artifact
-      - uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4
         with:
           name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS
           path: "mkdir ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS"
@@ -227,11 +227,11 @@ jobs:
 
       - name: Archive VST3 installer
         shell: bash
-        run: tar -czf ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS
+        run: tar -czf "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz" "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS"
 
       - name: Archive AU installer
         shell: bash
-        run: tar -czf ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS
+        run: tar -czf "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz" "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS"
 
       - name: Upload VST3 .tar.gz installer to artifacts
         uses: actions/upload-artifact@v4
