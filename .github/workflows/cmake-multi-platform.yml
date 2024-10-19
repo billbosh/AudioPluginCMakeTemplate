@@ -237,13 +237,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS
-          path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz
+          path: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz
 
       - name: Upload AU .tar.gz installer to artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS
-          path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz
+          path: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz
 
   Release:
     name: Release
