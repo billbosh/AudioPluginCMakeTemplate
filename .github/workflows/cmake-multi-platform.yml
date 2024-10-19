@@ -134,21 +134,21 @@ jobs:
       if: runner.os == 'macOS'
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS
+        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS-PKG
         path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.pkg
 
     - name: Upload AU pkg installer to artifacts (macOS)
       if: runner.os == 'macOS'
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS
+        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS-PKG
         path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.pkg
 
     - name: Upload VST3 pkg installer to artifacts (Windows)
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows
+        name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows-EXE
         path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
 
   MacInstallScript:
@@ -163,13 +163,13 @@ jobs:
       - name: Download VST3 pkg artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS
+          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS-PKG
           path: mkdir "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS"
 
       - name: Download AU pkg artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS
+          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS-PKG
           path: "mkdir ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS"
 
       - name: Display structure of downloaded files
@@ -236,13 +236,13 @@ jobs:
       - name: Upload VST3 .tar.gz installer to artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz
+          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS
           path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz
 
       - name: Upload AU .tar.gz installer to artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz
+          name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS
           path: packaging/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz
 
   Release:
