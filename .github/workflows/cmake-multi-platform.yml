@@ -198,7 +198,7 @@ jobs:
           cd /Library/Caches
 
           sudo mv ${{ env.PLUGIN_NAME }}.component ~/Library/Audio/Plug-Ins/Components
-          ' > "{{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS/install-script.sh"
+          ' > "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS/install-script.sh"
 
       - name: Create AU install script
         shell: bash
@@ -223,7 +223,7 @@ jobs:
           cd /Library/Caches
 
           sudo mv ${{ env.PLUGIN_NAME }}.component ~/Library/Audio/Plug-Ins/Components
-          ' > "{{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS/install-script.sh"
+          ' > "${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS/install-script.sh"
 
       - name: Archive VST3 installer
         shell: bash
