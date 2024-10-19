@@ -276,7 +276,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: /${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz
           asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-MacOS.tar.gz
-          asset_content_type: application/octet-stream
+          asset_content_type: application/gzi[
   
       - name: Upload AU .tar.gz installer to release (macOS)
         uses: actions/upload-release-asset@v1
@@ -286,7 +286,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: /${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz
           asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS.tar.gz
-          asset_content_type: application/octet-stream
+          asset_content_type: application/gzip
   
       - name: Upload VST3 exe installer to release (Windows)
         uses: actions/upload-release-asset@v1
@@ -296,4 +296,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: /${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows/${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
           asset_name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-VST3-Installer-Windows.exe
-          asset_content_type: application/octet-stream
+          asset_content_type: application/vnd.microsoft.portable-executable
