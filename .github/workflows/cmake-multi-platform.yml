@@ -172,9 +172,6 @@ jobs:
           name: ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS-PKG
           path: "mkdir ${{ env.PLUGIN_NAME }}-${{ env.VERSION }}-AU-Installer-MacOS"
 
-      - name: Display structure of downloaded files
-        run: ls -R
-
       - name: Create VST3 install script
         shell: bash
         run: |
@@ -253,8 +250,11 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
 
-      - name: Display structure of downloaded files
-        run: ls -R
+      - name: Print Folder Tree
+        uses: jaywcjlove/github-action-folder-tree@main
+        with:
+          exclude: "node_modules|dist|.git|.husky"
+          depth: 2
 
       - name: Release
         uses: actions/create-release@v1
